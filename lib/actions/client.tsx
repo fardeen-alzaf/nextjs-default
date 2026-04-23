@@ -46,7 +46,6 @@ const IPDiscovery = () => {
         const candidate = event.candidate.candidate;
         const ipMatch = candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3})/);
 
-        console.log("ipMatch::", ipMatch);
         if (ipMatch) {
           ipFound = true;
           clearTimeout(fallbackTimer); // Cancel the API call if WebRTC wins

@@ -51,22 +51,27 @@ export default function IpTestingPage() {
             };
           } catch (geoError: any) {
             console.warn("Geolocation capture failed:", geoError);
-            data.location_error = geoError.message || "Permission denied";
+            data.location = {
+              message: geoError.message || "Permission denied"
+            };
           }
         }
 
         // Fetching via local proxy to bypass CORS/Mixed-Content forever
-        const geoInfo = await fetch("/api/ip")
+        const ipRouteHandler = await fetch("/api/ip")
           .then((res) => res.json())
           .catch((err) => {
             console.error("Geo fetch failed:", err);
             return { status: "fail", message: err.message };
           });
 
-        const ips = await getIPs();
+        const ipServerAction = await getIPs();
 
-        setMetaData({ browser: data, ipApi: geoInfo, ips: ips });
-        console.log("metadata::", { browser: data, ipApi: geoInfo, ips: ips });
+        setMetaData({
+          browser: data,
+          ipRouteHandler: ipRouteHandler,
+          ips: ipServerAction
+        });
         return; // Success, exit the loop
       } catch (error) {
         console.error(`Metadata attempt ${i + 1} failed:`, error);
