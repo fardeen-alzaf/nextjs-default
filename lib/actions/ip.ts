@@ -8,9 +8,9 @@ export async function getIPs() {
 
   let ip = null;
   try {
-    ip = await fetch("http://ip-api.com/json?fields=66846719").then((res) =>
-      res.json()
-    );
+    ip = await fetch(
+      `http://ip-api.com/json/${cookieStore.get("user_ip")?.value || headersList.get("x-forwarded-for")}`
+    ).then((res) => res.json());
     console.log("ip-api", ip);
   } catch (e) {
     console.log("ip-api issue::", e);
